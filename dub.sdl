@@ -1,0 +1,21 @@
+name "serialize_benchmark"
+description "A minimal D application."
+authors "darkridder"
+license "proprietary"
+
+
+dependency "cerealed" version="~>0.6.9"
+//dependency "orange" version="~>1.0.0"
+dependency "vibe-d" version="~>0.8.0"
+dependency "jsonizer" version="~>0.7.5"
+dependency "msgpack-d" version="~>1.0.0-beta.6"
+//dependency "dyaml-yamlserialized" version="~>0.6.0"
+//dependency "yajl" version="~>0.2.0"
+
+
+configuration "application" {
+   stringImportPaths "import"
+   mainSourceFile "source/app.d"
+   targetType "executable"
+}
+
