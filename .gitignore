@@ -16,3 +16,4 @@ libserialize_benchmark.a
 *.o
 *.obj
 *.lst
+*.dll
