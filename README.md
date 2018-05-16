@@ -8,10 +8,13 @@ Methods:
 - drmi.sbin
 - Jsonizer + std.json
 
+Intel Xeon e5-2640
+
 OS Windows 10
 
 DMD 2.080.0
 LDC 1.9.0.
+
 
 # DMD results:
   
@@ -113,3 +116,134 @@ page cache
 serialize test = 24 secs, 46 ms, 474 s, and 8 hnsecs. Size = 3537680000
 
 deserialize test = 37 secs, 574 ms, 384 s, and 9 hnsecs
+
+
+# LDC results with flags -mcpu=native and -mattr=+sse4.2:
+
+===CEREALED===
+
+book
+
+serialize test = 12 ms, 687 s, and 3 hnsecs. Size = 40640000
+
+deserialize test = 2 ms, 64 s, and 7 hnsecs
+
+page cache
+
+serialize test = 73 ms, 74 s, and 6 hnsecs. Size = 6399360000
+
+deserialize test = 971 s and 9 hnsecs
+
+long structure
+
+serialize test = 40 ms, 172 s, and 3 hnsecs. Size = 20960000
+
+deserialize test = 15 ms, 165 s, and 8 hnsecs
+
+
+===JSONIZER===
+
+book
+
+serialize test = 110 ms, 594 s, and 7 hnsecs. Size = 55360000
+
+deserialize test = 191 ms, 63 s, and 1 hnsec
+
+page cache
+
+serialize test = 11 secs, 225 ms, 660 s, and 7 hnsecs. Size = 7077440000
+
+deserialize test = 19 secs, 548 ms, 295 s, and 9 hnsecs
+
+long structure
+
+serialize test = 245 ms, 105 s, and 6 hnsecs. Size = 95360000
+
+deserialize test = 408 ms, 406 s, and 9 hnsecs
+
+
+===MessagePack===
+
+book
+
+serialize test = 9 ms, 673 s, and 1 hnsec. Size = 40480000
+
+deserialize test = 16 ms, 886 s, and 9 hnsecs
+
+page cache
+
+serialize test = 37 ms, 37 s, and 6 hnsecs. Size = 6399840000
+
+deserialize test = 58 ms, 599 s, and 3 hnsecs
+
+long structure
+
+serialize test = 21 ms, 563 s, and 3 hnsecs. Size = 18560000
+
+deserialize test = 64 ms, 410 s, and 7 hnsecs
+
+
+===DRMI===
+
+book
+
+serialize test = 10 ms, 740 s, and 1 hnsec. Size = 44480000
+
+deserialize test = 73 ms and 954 s
+
+page cache
+
+serialize test = 71 ms, 404 s, and 6 hnsecs. Size = 6400320000
+
+deserialize test = 9 secs, 646 ms, 396 s, and 2 hnsecs
+
+long structure
+
+serialize test = 24 ms, 38 s, and 5 hnsecs. Size = 32480000
+
+deserialize test = 65 ms, 717 s, and 8 hnsecs
+
+
+===ASDF===
+
+book
+
+serialize test = 38 ms, 895 s, and 9 hnsecs. Size = 50400000
+
+deserialize test = 20 ms, 803 s, and 1 hnsec
+
+page cache
+
+serialize test = 3 secs, 661 ms, 944 s, and 6 hnsecs. Size = 6861920000
+
+deserialize test = 1 sec, 300 ms, 98 s, and 5 hnsecs
+
+
+===PROTOBUF===
+
+book
+
+serialize test = 14 ms and 954 s. Size = 0
+
+deserialize test = 115 s and 5 hnsecs
+
+page cache
+
+serialize test = 40 ms, 278 s, and 8 hnsecs. Size = 0
+
+deserialize test = 133 s and 9 hnsecs
+
+
+===Json===
+
+book
+
+serialize test = 107 ms, 28 s, and 4 hnsecs. Size = 50400000
+
+deserialize test = 176 ms, 829 s, and 1 hnsec
+
+page cache
+
+serialize test = 11 secs, 190 ms, 930 s, and 3 hnsecs. Size = 7075360000
+
+deserialize test = 19 secs, 454 ms, 427 s, and 5 hnsecs
