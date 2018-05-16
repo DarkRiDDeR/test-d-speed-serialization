@@ -128,8 +128,6 @@ void testDproto(T)(T data, int itersCount)
     }
     auto r = benchmark!(serializeTest, deSerializeTest)(itersCount);
     printResults(cast(long)(serializeData.sizeof * serializeData.length), itersCount, r[0], r[1]);
-        writeln(serializeData.sizeof);
-    writeln(serializeData.length);
 }
 
 void testJsonBook(StructBook data, int itersCount)
