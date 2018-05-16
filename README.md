@@ -7,6 +7,8 @@ Methods:
 - msgpack-d
 - drmi.sbin
 - Jsonizer + std.json
+- Asdf
+- Protobuf
 
 Intel Xeon e5-2640
 
