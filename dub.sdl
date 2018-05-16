@@ -8,11 +8,15 @@ dependency "cerealed" version="~>0.6.9"
 dependency "jsonizer" version="~>0.7.5"
 dependency "msgpack-d" version="~>1.0.0-beta.6"
 dependency "drmi" version="~>0.13.0"
+dependency "asdf" version= "~>0.1.8"
+dependency "dproto" version= "~>2.1.4"
 
 
 configuration "application" {
-   stringImportPaths "import"
-   mainSourceFile "source/app.d"
-   targetType "executable"
+    stringImportPaths "import"
+    mainSourceFile "source/app.d"
+    targetType "executable"
 }
 
+dflags "-mcpu=native"
+dflags "-mattr=+sse4.2"

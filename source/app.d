@@ -16,6 +16,9 @@ import drmi.sbin;
 pragma(lib, "ws2_32");
 import msgpack;
 
+import asdf;
+
+import dproto.dproto;
 
 void printResults (long size, int itersCount, Duration serializeResult, Duration deSerializeResult)
 {
@@ -93,6 +96,41 @@ void testDrmi(T)(T data, int itersCount)
     printResults(cast(long)(serializeData.sizeof * serializeData.length), itersCount, r[0], r[1]);
 }
 
+void testAsdf(T)(T data, int itersCount)
+{
+    auto serializeData = data.serializeToJson();
+    auto deSerializeData = serializeData.deserialize!T;
+
+    assert(deSerializeData == data);
+
+    void serializeTest() {
+        data.serializeToJson();
+    }
+    void deSerializeTest() {
+        serializeData.deserialize!T;
+    }
+    auto r = benchmark!(serializeTest, deSerializeTest)(itersCount);
+    printResults(cast(long)(serializeData.sizeof * serializeData.length), itersCount, r[0], r[1]);
+}
+
+void testDproto(T)(T data, int itersCount)
+{
+    ubyte[] serializeData = data.serialize();
+    T deSerializeData = T(serializeData);
+
+    assert(deSerializeData == data);
+
+    void serializeTest() {
+        data.serialize();
+    }
+    void deSerializeTest() {
+        T(serializeData);
+    }
+    auto r = benchmark!(serializeTest, deSerializeTest)(itersCount);
+    printResults(cast(long)(serializeData.sizeof * serializeData.length), itersCount, r[0], r[1]);
+        writeln(serializeData.sizeof);
+    writeln(serializeData.length);
+}
 
 void testJsonBook(StructBook data, int itersCount)
 {
@@ -213,6 +251,19 @@ struct StructLongJsonizer {
     }
 }
 
+mixin ProtocolBufferInterface!`
+    message StructBookProto {
+        string name = 1;
+        int32 pageNumber = 2;
+        string published = 3;
+        string author = 4;
+        string description = 5;
+    }
+    message StructPageProto {
+        string data = 1;
+        int32 time = 2;
+    }
+`;
 
 void main()
 {
@@ -224,6 +275,16 @@ void main()
     StructPageJsonizer pageJsonizer;
     StructLongJsonizer longDJsonizer;
 
+    StructBookProto bookProto;
+    StructPageProto pageProto;
+    bookProto.name = book.name;
+    bookProto.pageNumber = book.pageNumber;
+    bookProto.published = book.published;
+    bookProto.author = book.author;
+    bookProto.description = book.description;
+    pageProto.data = page.data;
+    pageProto.time = page.time;
+    
     writeln("===CEREALED===");
     writeln("book");
     testCerealed!StructBook(book, 10_000);
@@ -255,6 +316,21 @@ void main()
     testDrmi!StructPage(page, 10_000);
     writeln("long structure");
     testDrmi!StructLong(longD, 10_000);
+
+    writeln("===ASDF===");
+    writeln("book");
+    testAsdf!StructBook(book, 10_000);
+    writeln("page cache");
+    testAsdf!StructPage(page, 10_000);
+    // failure
+    //writeln("long structure");
+    //testAsdf!StructLong(longD, 10_000);
+
+    writeln("===PROTOBUF===");
+    writeln("book");
+    testDproto!StructBookProto(bookProto, 10_000);
+    writeln("page cache");
+    testDproto!StructPageProto(pageProto, 10_000);
 
     writeln("===Json===");
     writeln("book");
